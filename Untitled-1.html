@@ -19,6 +19,10 @@
         text-align: center;
         font-size: 300%;    
     }
+    h2 {
+        text-align: center;
+        font-size: 250%;
+    }
     p {
         text-align: center;
         font-size: 100%;
@@ -28,6 +32,28 @@
         font-size: 200%;
         padding: 0;
         padding-bottom: 50px;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    .success {
+      color: green;
+      margin-top: 10px;
+    }
+    form {
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 125%;
+    }
+    input {
+        font-size: 150%;
+        font-family:'Courier New', Courier, monospace;
+    }
+    textarea {
+        font-size: 150%;
+        font-family:'Courier New', Courier, monospace;
     }
 </style>
 <body>
@@ -41,5 +67,40 @@
         <p>Мои контакты:</p>
         <li>Почта: sweetpitcher497@gmail.com</li>
     </ul>
+    <h2>Форма для обратной связи</h2>
+    <form id="feedbackForm">
+        <label>Имя:</label><br>
+        <input type="text" id="name"><br><br>
+        <label>Email:</label><br>
+        <input type="text" id="email"><br><br>
+        <label>Комментарий:</label><br>
+        <textarea id="comment"></textarea><br><br>
+        <button type="submit">Отправить</button>
+    </form>
+    <p id="message"></p>
+    <script>
+        document.getElementById("feedbackForm").addEventListener("submit", function(withoutUpdates) {
+            withoutUpdates.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const comment = document.getElementById("comment").value.trim();
+            const message = document.getElementById("message");
+
+            if (!name || !email || !comment) {
+                message.textContent = "Пожалуйста, заполните все поля!"
+                message.className = "error";
+                return;
+            }
+            let atPos = email.indexOf("@");
+            let dotPos = email.lastIndexOf(".");
+            if (email.indexOf("@") <= 0 || email.lastIndexOf("@") == email.length - 1 || !email.includes(".") || (dotPos < atPos)) {
+                message.textContent = "Введите корректный email!";
+                message.className = "error";
+                return;
+            }
+            message.innerHTML = `Привет, <b>${name}</b>!<br> Спасибо за ваш комментарий: "<b>${comment}</b>".<br> Мы свяжемся с вами по адресу: <b>${email}</b><br>`;
+            message.className = "success";
+        });
+    </script>
 </body>
 </html>
